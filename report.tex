@@ -1,17 +1,33 @@
 \documentclass[10pt]{article}
 
+\usepackage{wrcecapstone}
+\hypersetup{
+  pdfauthor={Jerra Ewing, Harrison Boldt, James Love, and Jay Jordan},
+  pdftitle={Counter UAS Drone},
+  pdfsubject={weapons, robotics, and control engineering},
+  pdfkeywords={counterdrone, UAS}
+}
+\coursenumber{EW401}
+\student{MIDN 1/C J.~Ewing, MIDN 1/C H.~Boldt,\\MIDN 1/C J.~Love, and MIDN 1/C J.~Jordan}
+\advisor{Assistant Professor D. Evangelista}
+
 \title{Counter UAS Drone}
 \author{MIDN 1/C J Ewing, H Boldt, J Love, and J Jordan}
-\date{December 3, 2020}
+\date{\printdate{12/3/2020}}
 
 \begin{document}
-\maketitle
+\maketitlepage
+\cleardoublepage
+\tableofcontents
+%\listoffigures
+%\listoftables
 
+%first page
+\clearpage
+\maketitle
 \begin{abstract}
 Initially, the only direction this project had was innovating a drone.  It was very broad, but through collaborative background research and help from Professor Evangelista, the idea to counter an enemy UAS was formed. After background research and discussions with other faculty members our project evolved into targeting and recognition of enemy UAS targets using a drone of our own. Therefore, designing a system that both recognizes and maneuvers to an in-air target has grabbed this project's full focus.  
 \end{abstract}
-
-%\tableofcontents
 
 \section{Introduction}
 	As technology has advanced over the past decades, the threat of Unmanned Aerial Systems (UAS) on the battlefield has grown as well.  There have been efforts in creating counter UAS defence systems, but there is still significant work to be done.  All of these methods have more or less been ground based, but potentially there is an effective way to achieve this UAS defense on an air based platform.  Our group began to wonder if perhaps the best way to counter an enemy UAS could be to use another UAS to destroy it.  From this idea and our interest in drones, we decided to research and design an autonomous air to air drone for our Capstone project.  
@@ -674,8 +690,9 @@ With regard to the audio processing, our process has been refined to completely 
 %    [3] R. Brandom, “Watch Anduril's Anvil take down an off-the-shelf drone in midflight,” The Verge, 04-Oct-2019. [Online]. Available: https://www.theverge.com/2019/10/4/20898931/anduril-anvil-drone-footage-palmer-luckey-quadcopter. [Accessed: 27-Nov-2020]. 
 %    [4] “SKYWALL PATROL,” openworksengineering.com, 29-Jun-2020. [Online]. Available: https://openworksengineering.com/skywall-patrol/. [Accessed: 2020]. 
 
-%\nocite{*}
-%\bibliography{counterdrone.bib}
+\nocite{*}
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,counterdrone.bib}
 \end{document}
 
 
