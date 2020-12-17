@@ -1,0 +1,638 @@
+\documentclass[10pt]{article}
+
+\title{Counter UAS Drone}
+\author{MIDN 1/C J Ewing, H Boldt, J Love, and J Jordan}
+\date{December 3, 2020}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Initially, the only direction this project had was innovating a drone.  It was very broad, but through collaborative background research and help from Professor Evangelista, the idea to counter an enemy UAS was formed. After background research and discussions with other faculty members our project evolved into targeting and recognition of enemy UAS targets using a drone of our own. Therefore, designing a system that both recognizes and maneuvers to an in-air target has grabbed this project's full focus.  
+\end{abstract}
+
+%\tableofcontents
+
+\section{Introduction}
+	As technology has advanced over the past decades, the threat of Unmanned Aerial Systems (UAS) on the battlefield has grown as well.  There have been efforts in creating counter UAS defence systems, but there is still significant work to be done.  All of these methods have more or less been ground based, but potentially there is an effective way to achieve this UAS defense on an air based platform.  Our group began to wonder if perhaps the best way to counter an enemy UAS could be to use another UAS to destroy it.  From this idea and our interest in drones, we decided to research and design an autonomous air to air drone for our Capstone project.  
+        
+\subsection{1.1. Customer Interview}
+Capt. Caliph LeBrun, United States Marine Corps, is currently the officer representative of the United States Naval Academy’s Squad With Autonomous Teammates Challenge team. After receiving his masters from Naval Postgraduate School, Capt Lebrun now teaches in the electrical and computer engineering department here at the Academy. From his perspective, he is very interested in denying the Army Squad With Autonomous Teammates Challenge team the capability of airspace control in order to dominate and win the competition. From his point of view, autonomy is a key component in order to keep all hands on their primary weapons system.  
+        
+\subsection{1.2. Additional Background Research}
+This project, and those that inspired it, are on the forefront of defense contracting and aerospace engineering. With such a new platform, regulations and capabilities of unmanned aerial vehicles are undefined and seemingly limitless. Overseas, terror organizations began utilizing them to spy and attack US Forces.4 Outside of the military front, private enterprises and consumer drones have posed issues with security and safety on the homefront: from spying and surveillance concerns, to property and physical damage3. Therefore, countering these sorts of mishaps and misnomers is imperative to protecting our country as a whole.  This counter attack could be achieved through the use of small drones as means targeting and disabling other enemy drones. 
+ 
+Looking for inspiration on tracking software/hardware, a Light Detection and Ranging (LiDar) system developed by Raytheon Technologies gave us great direction.  control system that processes lidar information to track an object, place a virtual tracker, and monitor it’s GPS coordinates in another, sister system. The LiDar converts radar to gps coordinates, and where in those are sent to a data processing system to generate flight commands. Ground control can manually trigger countermeasure, as well as the intercept drone.  From the detection and tracking information, guidance is provided to a high powered intercept drone that is autonomously supervised, to implement constant bearing changing range (CBCR) tracking. This is used in tandem with a display system to monitor the situation on a separate screen.  This tracking system implements a two fold-ground and drone system to command the drone on a flight path independent of the drone’s systems. The ground station can provide constant data and more accurate tracking information, yet suffers from data latency1. This combination of computer vision and another tracking source was the basis for our current design model.  Despite not using a ground station tracking system, our plan would be to implement audio detection capability onto the drone so it has multiple ways of tracking its target.  
+
+Stressing the importance of the counter UAS strategy is an essay produced by Joint Force Quarterly, which outlined the need for counter UAS systems by stating how China is outspending the US in this field. No numerical statistic is given. A growing issue is encountering drone swarms. This technique seems to be more favorable to the Chinese. Traditionally, the US  uses short range missile intercept systems but that is not economical for the size and number of potential drones. While in house there are well developed counter air technologies, those are focused on larger targets. Patriot missiles wouldn’t be able to hit smaller drones. The author suggests a multiple solution approach keeping in mind that the frontline soldier will have to fight against these drones. Better radar systems are suggested due the issues of discrimination against targets. This article generated a large reason for why our project is needed in the current world but did little to provide any ideas of solutions. From reading it, the biggest take away is that it is imperative that a system for detecting, discriminating, and destroying enemy drones be developed in the near future.  Ultimately, this highlights the applicability  of our counter UAS project because our goal would be to create a drone capable of this task that can disable other drones alike.  
+
+The final ``area'' of our background research was jamming products. While this aspect of our project was eliminated due to project size and resource constraints, it is still a valuable asset in researching how drones operate.  The intended goal of this product is to jam other UAS systems and particularly act as a defence mechanism against swarm technology.  The device is called the PITBULL smart jammer and is a radio sized device that is strapped to the user.  It jams small enemy drones by blasting one of several common radio frequencies of commercial drones.  These signals include 2.4Ghz, 5.8 Ghz, and GNSS.  The PITBULL is equipped with internal directional antennas that can jam an enemy drone from about 1000 meters away.  When using the PITBULL in manual mode, the user must select the desired jamming frequency, where it can then jam continuously.  This company also makes another product that can be used in coordination to detect nearby drone frequencies and will direct the pitbull to jam the corresponding frequency band.  The PITBULL has an effective range of 1000 meters.  This product offers  an idea for our attack method on air to air drones since we now have seen that small jamming devices for UASs exist and are an effective countermeasure.  A jammer could be attached to our drone in order to jam other enemy drones in the air.  A foreseeable problem with this product is that it would only be effective against commercial drone frequencies.3  This problem aside though, the Pitbull or the Pitbull concept could be implemented as an attack method in our drone project.  We could attach a jammer to our drone and set it to jam suspected frequencies in our area, and then fly our drone above the tree line or other obscurations and fly toward the predicted direction of the enemy drone.  
+
+\section{Problem Statement}
+
+\subsection{Problem Statement}
+In combat, the uncontested use of airspace to conduct intelligence, surveillance, reconnaissance, and even offensive operations can provide the enemy with a significant advantage over our ground forces. To begin the process of eliminating that advantage without infringing upon our troops’ ability to act as riflemen, we intend to design and build an autonomous system that will detect and pursue enemy UAS in the area of operation. 
+
+\subsection{2.2. Functions}
+Troops place their trust in the equipment that they are given to defend themselves and accomplish their mission. This, in addition with the problem that we have chosen to address, informs the functions and capabilities that we must include in our system. 
+
+First, to maintain the number of hands on rifles, our system must be able to act autonomously. A manual drone would require a skilled operator, an asset that is not widely available, would require a large amount of training, and would hurt a unit’s effectiveness without a rifle pointed at the enemy. Additionally, even if members of a ground unit were to engage with a small unmanned aerial target with their offensive capability (firearms/smoke grenades), they would at best be distracted from the objective, and at worst, supply enemy ground forces with even more position information, increasing their vulnerability. Every missed shot wastes valuable ammunition, and due to the range and maneuverability of flying systems, they are nearly impossible targets.  
+
+Second, concerning detection, our system must be able to quickly and accurately sense enemy aerial systems. This may be accomplished through sight, sound, or the electromagnetic presence, but regardless of medium, it needs to be reliable. If the system reacts too slowly, it will allow the enemy to accomplish their objective with no resistance, and without accuracy, a ground unit will have to deal with either a useless tool or false alarms, both of which would make the system a burden better off left on the shelf.
+
+Finally, to effectively contest and pursue enemy air assets, our system must be able to maneuver through the air. A mobile ground system would face many, if not more of the limitations that a human with a rifle would, and a stationary ground system couldn’t even attempt to pursue a target, no matter how fine tuned its sensors may be. In contrast, an aerial system’s degrees of freedom would grant us the ability to close the distance between the enemy’s asset and our own. With this ability to enhance the positioning of our system, we are granted more options in the potential development of our system’s offensive capabilities, providing additional support to the elimination of airborne targets and the advantages they provide.
+
+\subsection{Constraints}
+Like all projects, we do not have unlimited time or resources, but the most concrete constraints on the direction of our project come from the nature of our system’s intended mission. Our system must be as light as possible. Ground combat units are tasked with carrying and maintaining large amounts of gear and equipment, and what they bring to the field is already stripped to the bare minimum. If we build a system that surpasses a reasonable size or weight, it will hinder a ground unit’s mobility, impacting both their safety and the effectiveness. 
+
+Our system must be able to carry a payload of at least 2 pounds. The functions we intend to develop will require sensing, processing, and control capabilities all obtained from components that each bring additional weight to the airframe. Though those components may be light for a person, the process of developing a lightweight system will cut down the amount of external equipment we can actually add to the system. By requiring the system to have the ability to carry at least 2 pounds ensures that it will be able to fly reliably on its own and provide legitimate competition to enemy systems that it encounters.
+
+\subsection{Objectives, Pairwise Comparison Chart, and Weightings}
+Objectives are as follows: 
+Detection Ability (Range), Endurance (Time), Navigation Ability (Accuracy), Payload Limit (Power), Weight (Burden)
+1: Pursue and follow targets, necessary to distinguish targets from background, gain accurate readings.  
+Once the enemy drone is identified and in our drone's vicinity, our drone has to be able to chase the target and close the distance between them.  As an autonomous air to air combat vehicle, our drones main purpose is to follow an enemy drone in order to hypothetically attack the other drone, although the kill function is no longer in the scope of our project.  
+2: Navigate to target, an objective that measures accuracy and effectiveness of the system
+The ability for our system drone to detect and track its target is more important than its ability to travel through the air to the target. Without the former, there is no way to do the latter without involving a manual operator, or preprogramming a flight path and hoping that the target just stumbles into our path. Additionally, detection can still be useful without a travel system, providing a ground unit with an early warning system and increased situational awareness.
+
+\subsection{Metrics} 
+Pursuit Metric Chart (Figure 1)
+Range: Ranges were taken from measurement found in the patent by Raytheon1
+Accuracy: Percentages are based on the same patent/paper as well as information from Joint Forces Quarterly UAS Strategy1. (With a standard range of 50m). This reveals that detection ranges are much shorter than originally anticipated, however accuracy within a larger radius fits the expectations and other limitations as well. Being in the air makes detection and accuracy much more difficult, as there are 6 degrees of freedom, compared to grounds 2. 
+
+Navigation Pairwise Chart (Figure 2)
+Endurance: In order to ensure the drone is effective, it must reach the target in a quick and reasonable time to save enough battery to ensure the attack is carried out.  These numbers are based on customer’s suggestions and typical flight time of their current stock.
+Accuracy: The decision to use 10,50,100,200 meters for the different scores of radial distances from stationary targets are based on the LiDar paper2 by the Journal of Engineering article on Raytheon’s patent. Raytheon used laser radar and light sensors to pick up light and infrared reflecting off of targets.  
+
+\section{Related Work}
+With the rise of Artillery spotting and surveillance drones in relation to military and border security other companies and individuals have made attempts at disabling enemy drones. Palmer Luckley an American entrepreneur who created a prototype drone that meant to take out other drones called the ``Anduril Anvil''.3 The design his team took was a quadcopter that would wait stationary on the ground and when another enemy drone passed overhead, Luckley's drone would fly up and ram into it. The actual process of targeting is not mentioned but video advertising feed indicated that a version of computer vision was used. Some of this drones shortcomings were its cost to damage ratio. Yes it could take out a drone but at the expense of its own structural integrity. Also Luckley’s design was not able to cover a larger area and had limited scope in drone detection. From this we desired our drone to be able to see and cover a larger area.
+
+Another Anti Drone idea that was a possible solution for us was using malware to hack into a drone. We came across the idea after seeing a youtube video by hobbyist Rahul Sasi that used a software called Maldrone that would use a computer or phone to connect to a drone. The program would then send the command for the drone to shut off and fall. While this method works it is not able to discriminate between enemy and friendly drones that might be able to be fixed through audio detection.
+
+Another example of a counter drone technology that we looked at to improve upon is a system called the SkyWall Patrol. It is a net that is launched as a projectile from the ground.4 The net ability brought some positive aspects into counter drone capability. This is seen in it’s reusability and the fact that other tech wouldn’t be harmed by electronic attack because of the use of a net. Using a launcher also requires a man to use it. We saw an opportunity to improve on this concept by adding automation.
+
+From similar anti drone products in the market we saw an opening to add a drone that would be able to use computer vision, other sensors, and automation we saw an opportunity to improve on related work. The detection mention of all the related work seemed to fall short of scope or ability that we thought one could produce in an autonomous drone that would be capable of seeking out other drones. 
+
+\section{4.  Conceptual Designs}
+The following concept designs were developed in an attempt to choose a kill method in addition to our drone’s identification and navigation functions. As the semester progressed, we realized that we had set our sights on too broad of an objective, so the kill method was dropped. The scope of the project shifted towards sub-system development of the targeting and navigation concepts; therefore the kill method implementation was dropped after these initial concepts were developed/reviewed.
+
+\subsection{3.1. Concept 1:  Flying Bug Catcher}
+
+Figure 4.1
+
+	Figure 4.1 features our first and most simple design concept. In this design, both the identification of hostile drones, and navigation to the target would be handled by an operator on the ground. After locating the target, the operator would have to manually pilot the drone to said target and attempt to tangle the enemy’s rotors in the malleable plastic net hanging underneath. This design prioritized simplicity of design.
+
+\subsection{Concept 2:  Jammer}
+
+Figure 4.2
+For our second concept, we ramped up the complexity in all areas. Displayed in figure 4.2, the drone identifies the target using radio frequency detection and a microphone, navigates in the area of operation using GPS, and  utilizes a third party radio frequency jammer to jam enemy control signals from reaching their drone. This design was intended to be fully autonomous so it wouldn’t impede upon the limited manpower of a hypothetical ground squad.
+
+\subsection{Concept 3:  Semi-Auto Drone}
+
+Figure 4.3
+
+	Our final design, featured in figure 4.3, combines some of the elements from the first two designs. The drone uses radar and sound targeting to assist the operator’s eyes and ears in locating the enemy drone, and after manually piloting the drone to the target, the kill is achieved with the net below. 
+
+\subsection{Decision Matrix}
+%Objective
+%Weight
+%Kill
+%Jammer
+%S. Auto
+%Sub Sys 1
+%
+%Manual Nav
+%Autonomous
+%Manual Nav
+%Accuracy (Pos)
+%4
+%4/16
+%3/12
+%4/16
+%Endurance
+%2
+%1/2
+%4/8
+%1/2
+%Sub Sys 2
+%
+%Manual Target
+%RF & Audio
+%RF & Audio
+%Accuracy (Det)
+%6
+%3/18
+%4/24
+%4/24
+%Control
+%4
+%0
+%4/24
+%4/24
+%Range 
+%2
+%4/8
+%3/6
+%4/8
+%Sub Sys 3
+%
+%Net
+%Jammer
+%Net
+%Effective 
+%6
+%4/24
+%0
+%4/24
+%Reusability
+%4
+%2/8
+%4/16
+%2/8
+%Range
+%2
+%1/2
+%4/8
+%1/2
+%Total
+%
+%78
+%98
+%108
+Figure (4.4)
+Figure 4.4 contains the design matrix., where one metric at a time compares each of the designs to each other with the weights determined through a pairwise process.. The weight system made certain objectives more important in our decision process.  We determined that accuracy for example was the most important objective for the targeting subsystem and had a greater influence in our final design concept.  Whatever weight we determined for each objective was then multiplied by the score that we gave the objective from 0 to 4 to give the points that will be summed from each of the objectives. We realize that these decisions do not reflect the current aspect of our project
+
+\section{Ethical Considerations}
+Malicious misuse of our product seems unlikely, however there are a few potential scenarios where this could happen.  For one, our drone could potentially be used to target people with computer vision and collide with them, giving severe cuts, but likely no lethal effects.  Additionally, this drone could be used to harm other friendly civilian drones and destroy personal property in doing so.  The greatest concern would be the unintentional collision between a drone and a bystander as the drone is traveling toward its target if there was a person that crossed the drones low altitude path.  Going off a similar concept, if the drone lost signal or had a hiccup in the computer vision or audio code then the drone could potentially unintentionally collide with a person.  
+ 
+Since the probability and severity of unethically using our drone project is very unlikely, this had very little effect on the shaping of our project, however safety concerns with potential unintended mishaps have led us to plan on creating a failsafe protocol.  This failsafe will land the drone to a location directly below the drone if it loses any necessary signal or if the computer vision or audio detection code goes haywire.  THis will prevent the drone from harming others if the drone gets out of control.  
+
+Regarding some of our considerations form our background research, some of the potential ideas like the PITBULL would need to be used cautiously as to not interfere with other friendly drones in the area by jamming them.3  Additionally, if we were flying with the jammer active, then we could accidentally jam other buildings and operations in the surrounding area that are within the range of the jammers.
+
+\section{Engineering Standards and Specifications}
+With respect to the Anti-Air Drone Project, there are a few standards and specifications that can apply to both the microcontroller and overall design of the project. Going towards the raspberry pi, updated specifications for the use of specific phthalate substances, which are plasticized insulators, were implemented to restrict the use of substances of Very High Concern (SVHC). This means that the razPi’s are utilizing less toxic materials which could potentially put servicemembers out of commission. Moving forward, we will utilize  MIL STD-1472.  This standard defines “human engineering design criteria”, which also happens to detail carrying load standards for both men and women, on a general scale. If our design fits within the bell curve average for both cases, it will be seen as a sound portable device, with multiple expeditionary purposes.
+
+\section{Preliminary Detailed Design}
+\subsection{Component Selection}
+The only parts acquired were still the Raspberry Pi and usb mini microphones necessary to process, automate, and detect the other drones. The microcontrollers are selected for the language use and ability to integrate with openCv, as well as being cost effective. Microphones were selected based on weight, size, and detection range.  
+\subsection{Parts List and Budget}
+Below is the additional parts list that could not be acquired immediately within the department. In addition, an updated project budget was calculated using both standard rates, overhead, taxes, and all other forms of monetary compensation. THese were reviewed and sent up to Professor Evangelista, our project advisor. 
+%Part 1
+%Raspberry Pi
+%Model Number
+%B07TD42S27
+%Unit Cost $50
+%Quantity 2
+%Total Cost $100
+%Part 2
+%Raspberry Pi
+%Model Number
+%B0747F2HHG
+%Unit Cost $23
+%Quantity 1
+%Total Cost $23
+%
+%
+%MATERIALS
+%Category
+%Item #
+%Vendor (with POC)
+%Part Number
+%Description of item
+%Quantity
+%Unit Price
+%Cost Estimate
+%
+%Project-specific parts
+%Item 1
+%RazPi 4
+%Raspberry Pi/Amazon
+%B07TD42S27
+%Y
+%$50
+%100
+%
+%
+%Item 2
+%USB Microphone
+%Amazon
+%B0747F2HHG
+%Y
+%$23
+%23
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%Estimated Shipping Cost
+%
+%$18.45
+%
+%Additional product parts
+%Item 1
+%
+%
+%
+%
+%
+%$0.00
+%
+%
+%Item 2
+%
+%
+%
+%
+%
+%
+%Project-specific Sub-Total with Shipping Estimate
+%
+%
+%
+%
+%
+%
+%
+%$141.45
+%Complete Materials Sub-total with Shipping Estimate
+%
+%
+%
+%
+%
+%
+%
+%$141.45
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%LABOR
+%Category
+%
+%
+%
+%
+%Hours
+%Hourly rate
+%Cost
+%
+%Midshipman
+%
+%
+%
+%
+%336
+%$100
+%$33,600
+%
+%Faculty
+%
+%
+%
+%
+%75
+%$60
+%$4,500
+%
+%Staff
+%
+%
+%
+%
+%40
+%$40
+%$1,600
+%Sub-total
+%
+%
+%
+%
+%
+%
+%
+%$39,700
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%OVERHEAD
+%Category
+%
+%
+%
+%
+%Base Labor Cost
+%Overhead Rate
+%Cost
+%
+%Fringe Benefits
+%
+%
+%
+%
+%$39,700
+%35%
+%$13,895
+%
+%Facilities
+%
+%
+%
+%
+%$39,700
+%50%
+%$19,850
+%
+%General Services
+%
+%
+%
+%
+%$39,700
+%15%
+%$5,955
+%Sub-total
+%
+%
+%
+%
+%
+%
+%
+%$39,700
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%TOTAL COST
+%
+%
+%
+%
+%
+%
+%
+%$79,541
+%OUT-OF-POCKET COST
+%
+%
+%
+%
+%
+%
+%
+%$141
+
+The material costs were calculated  by adding the only two purchases that we made and adding on a generous shipping estimate to error on the side of overestimation.  The labor costs were hypothetical costs associated with all of the people working on this project.  The labor rates were estimated by looking up standard wages given the amount of education each person or group had.  Professors have a much higher labor cost because they have significantly more education than midshipmen.  The overhead costs consist of all other costs that we would encounter in a real product development scenario.  This overhead includes costs like building, property maintenance, benefits, etc.  
+
+\subsection{6.3. Mechanical Drawings}
+
+           
+Figure 3: prototyped box to hold razPi(s) Anafi drone body           Figure 4: Attaching bracket to mount to the parrot Anafi
+Above in figures 3 and 4 are prototyped, Inventor 3D models that will assist in mounting various components to the body of the drone. Figure 3 shows a compartment to house the microcontroller, and have space to thread the microphones out towards the front of the drone as well. The second figure is a mounting bracket that will be used to connect the box to the frame. Additional designs are being worked out as well to streamline the aesthetic. 
+
+\subsection{6.4. Software Structure}
+%
+%import cv2
+%cap = cv2.VideoCapture(0)
+%cap.set(3,640)
+%cap.set(4,480)
+%cap.set(10,100)
+%While True:
+%   success, img = cap.read()
+%   cv2.imshow("Video",img)
+%   if cv2.waitKey(1) & 0xFF ==ord('q'):
+%       break
+%import cv2
+%img = cv2.imread("Resources/shot1.jpg")
+%imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+%cv2.imshow("GrayImage", imgGray)
+%cv2.wait(0)
+Software for the computer vision section follows a general while loop to display, read, and edit the image. A similar flow structure is being used to create a live video version. Interaction with outside cameras are being implemented currently and results will follow the completion of the bench demonstration. Below is another sample of code from another subsystem: Audio detection. 
+%
+%[x, Fs] = audioread('hoveriphone.wav');
+%%279Hz for anafi hover
+%%383-432Hz for racing
+%signal_length = length(x);
+%Ts = 1./Fs;
+%t = (0:signal_length-1).*Ts;
+%figure(1);
+%plot(t, x);
+%xlabel('time (sec)'); ylabel('signal'); title('Drone Audio Recording');
+%M=2^18;
+%X_k_Dbl_Sided = fft(x, M);
+%mag = abs(X_k_Dbl_Sided);
+%X_k_Single_sided = X_k_Dbl_Sided(1:(M/2)+1);
+%magX_k = abs(X_k_Single_sided);
+%DFT_res = Fs./M;
+%f_vect = 0:DFT_res:Fs/2;
+%figure(2);
+%stem(f_vect, magX_k);
+%xlim([0 1000]);
+%xlabel('Hz'); ylabel('signal'); title('Spectrum Plot of Iphone Recoder Hovering Anafi');
+
+
+
+The software above computes a fast fourier transform of a recorded sound signal sampled at 48kHz and then plots it. This was the basis for proof that audio capability would provide additional support to computer vision in drone detection.
+
+\section{Proposed Work}
+\subsection{Work Breakdown Structure}
+The computer vision is being handled primarily by Jerra and Jay.  In this area, they will be working on learning Python coding and creating computer vision to identify an enemy quadrotor drone.  Currently they are using a camera unrelated to the parrot drone in order to start creating the computer vision and test it without needing to fly our drone as well.  Eventually we will implement their computer vision with the parrot Anafis camera and incorporate it with the drone’s autonomous control.  This computer vision will then be tailored to pick out drones from the camera’s field of view.
+   
+The audio system will be worked on by Harrison and James.  Harrison has significant experience and knowledge in the area of audio processing so he will be taking the lead on this subsystem design.  In this area of the project we will be working on processing audio files through a razpi using python as opposed to processing and recordings on matlab.  Once the USB microphone arrives at the academy, we will pick up audio signals from other drones and process the signal through the razpi while filtering out the frequency that our own quadrotor producest .  From there the frequencies will be determined and if they are in a reasonable frequency range, our drone will consider it to be an enemy drone detection.  From there we will program the drone to spin slowly about the z axis as a part of the navigational subsystem inorder to pan the camera until the enemy drone hopefully comes into the camera's frame of view.  If and when the enemy drone comes into view, the computer vision will spot the drone and take control.  
+
+James will also be operating the drone to get pictures for the computer vision subteam to work with and testing the audio detection and computer vision subsystems as we continue to make progress on them throughout the semester.  He will also be responsible for submitting flight requests and other preliminary measures for flying the Parrot Anafi Drone. 
+
+
+
+
+
+\subsection{7.2. Timeline}
+%
+%Subsystem 1
+%
+%
+%Recognition(CV)
+%Time Estimate
+%Member
+%Download OpenCV
+%.5 weeks
+%All
+%INteract with IDE
+%1 week
+%Ewing/Jordan
+%Develop simple image thresholding function
+%1 week
+%Ewing
+%Image Recognition/Shape Threshold
+%2 week
+%Ewing
+%Live Feed
+%2 weeks
+%Ewing/Jordan
+%integration
+%3 weeks
+%Jordan
+%testing
+%1 week
+%All
+%Debugging
+%1 week
+%All
+%Documentation
+%1 week
+%Ewing/Jordan
+%
+%Subsytem 2
+%
+%
+%Homing(audio)
+%Time Estimate
+%Member
+%Live Recording Ability
+%2 weeks
+%Boldt
+%Live FFT / signal processing
+%3 weeks
+%Boldt
+%Integration
+%3 weeks
+%Boldt/Love
+%testing
+%2 week
+%Boldt/Love
+%Debugging
+%2 week
+%Boldt/Love
+%Documentation
+%1 week
+%Boldt/Love
+%
+%System 3
+%
+%
+%Navigation
+%Time Estimate
+%Member
+%Spin Protocol
+%3 week
+%Love
+%write out 90 degree turns/ Interact w/each motor
+%3 week
+%Ewing
+%testing
+%3 weeks
+%Love
+%Debugging
+%2 weeks
+%Love
+%Documentation
+%2 weeks
+%All
+
+\subsection{7.3. Risk management}
+Several of the largest risks are Raspi overload, insufficient skills, and COVID disruption.  The risk of the razpi overloading is present because the computer vision that we will be running on it will take a significant amount of processing power.  The counter-measure to this is getting a second razpi ahead of time so that if the 1st razpi is overloaded, we will have another on standby split to split the load between two.  
+
+Another HIgh risk that we assessed and rated was the potential of lacking the skills necessary to complete the project as intended.  This is because none of us began this project with any knowledge of python coding and we had a limited experience with computer vision.  In order to mitigate this risk, we will get extra instruction from multiple professors to improve our knowledge base and accelerate our progress toward completing our lab demonstrations as we have already been doing. 
+ 
+The last risk that we deemed most important is COVID interference.  We have already had a week of ROM occur with people going in and out of isolation.  Additionally, when we get back next semester we are going to be ROMing again and have significant uncertainty with what leadership will choose to do with rules and restrictions for the next semester.  This will interfere with our ability to meet in person, fly our drones, acquire new equipment that we might need along the way.  To mitigate the effects of COVID, we will look ahead at wheat parts and equipment we need and secure it ahead of time to prevent delays in retrieving equipment.  Additionally we will make sure to tackle tasks that require meeting in person first, so that if we go on a ROM status again, we won't be affected as severely.  
+%
+%Likelihood
+%3
+%Highly likely
+%
+%Razpi Overload
+%skills not met
+%COVID-19
+%
+%2
+%Likely
+%
+%
+%
+%
+%1
+%Not likely
+%
+%
+%
+%
+
+
+Small reduction in technical performance (metric), or ability to meet key dates or increase in budget
+Will fail one metric or will lose one function, will become behind schedule but will be able to meet key dates with a decrease in performance, or will need to purchase parts with more capabilities
+Will lose key technical performance, or will need to build system or will not make key dates
+
+\subsection{7.4. Demonstration and Testing Plan}
+OpenCV: Run through openCV PyCHarm tutorial and demonstrate the ability to interact with the program. Create a live video feed and image highlighting system that can identify, outline, display moving targets. The demonstration shows this in real time.  
+
+Audio: Learn how to interact and code in Python. Perform drone recording of random distance intervals to be used for tests. Utilize pythons ability to perform fourier transforms on a pre recorded sound signal. Then use signal processing methods to determine and give indication (1 or 0) that a drone is in the area.
+
+\section{Benchtop Demonstration}
+\subsection{Activities}
+At the end of this semester, we focused our efforts toward developing basic computer vision in order to create a base to work on and improve for our computer subsystem.  On the audio side of the project, we have worked on processing sound recordings and analyzing them through matlab to determine the audio frequency of our own drone as well as other drones for reference.  Additionally, we were able to produce the fourier transforms of sound recordings and are working toward coordinating the rotation of our drone with the detection of an enemy audio signa
+
+\subsection{Results}
+On the computer vision side of the project, we were successfully able to create and run a live video feed from the issued webcams through and mask backgrounds, highlight, and threshold a feed to pick up objects outlines. Challenges came on the front end with downloading openCV to the issued machines. Root installations and integration between the openCV library and python, a new coding language for our group, and other hiccups proved challenging. However, as seen below, the results were very promising. Having a steady source of light, the code was able to mask and highlight the moving images with ease. A comparison can be made between the original screen cap, and the thresholded one below.  This makes a good promise for the next step, which is image and color recognition. Working through the break and into next semester, we hope to get a rough draft of the image recognition software. 
+
+                                              Figure 5 detailing Computer Vision Detection                                   Figure 6 shows the original picture of the subject
+
+With regard to the audio processing, our process has been refined to completely understand the mathematical process that occurs. By demonstrating in MATLAB our ability to complete this process we needed to convert our code to python. One of the largest struggles was to get the data array of the sound file into python. Python 3.9 was unable to download external packages of .wav files and higher level communication packages are not up to date. Because of this we have implemented our risk mitigation plan by intaking data elsewhere and still demonstrating the signal processing to obtain a deliverable by 7DEC20.
+
+
+%References
+%
+%    [1] Guelfi, Edward A., et al. "The Imperative for the U.S. Military to Develop a Counter-UAS 
+%Strategy." Joint Force Quarterly, no. 97, Apr. 2020, p. 4+. Gale Academic OneFile, https://link.gale.com/apps/doc/A623446271/AONE?u=anna82201&sid=AONE&xid=24ec0320. Accessed 3 Sept. 2020.https://go.gale.com/ps/i.do?p=AONE&u=anna82201&id=GALE|A623446271&v=2.1&it=r&sid=summon
+%    [2] 'Intercept Drone Tasked to Location of Lidar Tracked Drone' in Patent Application Approval Process (USPTO 20170261604)." Journal of Engineering, 2 Oct. 2017, p. 1724. Gale Academic OneFile, https://link.gale.com/apps/doc/A507501991/AONE?u=anna82201&sid=AONE&xid=cb92bf84. Accessed 2 Sept. 2020.
+%    [3] R. Brandom, “Watch Anduril's Anvil take down an off-the-shelf drone in midflight,” The Verge, 04-Oct-2019. [Online]. Available: https://www.theverge.com/2019/10/4/20898931/anduril-anvil-drone-footage-palmer-luckey-quadcopter. [Accessed: 27-Nov-2020]. 
+%    [4] “SKYWALL PATROL,” openworksengineering.com, 29-Jun-2020. [Online]. Available: https://openworksengineering.com/skywall-patrol/. [Accessed: 2020]. 
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
