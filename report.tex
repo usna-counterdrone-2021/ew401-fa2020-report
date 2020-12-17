@@ -56,11 +56,17 @@ Once the enemy drone is identified and in our drone's vicinity, our drone has to
 The ability for our system drone to detect and track its target is more important than its ability to travel through the air to the target. Without the former, there is no way to do the latter without involving a manual operator, or preprogramming a flight path and hoping that the target just stumbles into our path. Additionally, detection can still be useful without a travel system, providing a ground unit with an early warning system and increased situational awareness.
 
 \subsection{Metrics} 
-Pursuit Metric Chart (Figure 1)
+\begin{figure}
+\caption{Pursuit Metric Chart (Figure 1)}
+\label{fig:1}
+\end{figure}
 Range: Ranges were taken from measurement found in the patent by Raytheon1
 Accuracy: Percentages are based on the same patent/paper as well as information from Joint Forces Quarterly UAS Strategy1. (With a standard range of 50m). This reveals that detection ranges are much shorter than originally anticipated, however accuracy within a larger radius fits the expectations and other limitations as well. Being in the air makes detection and accuracy much more difficult, as there are 6 degrees of freedom, compared to grounds 2. 
 
-Navigation Pairwise Chart (Figure 2)
+\begin{figure}
+\caption{Navigation Pairwise Chart (Figure 2)}
+\label{fig:2}
+\end{figure}
 Endurance: In order to ensure the drone is effective, it must reach the target in a quick and reasonable time to save enough battery to ensure the attack is carried out.  These numbers are based on customer’s suggestions and typical flight time of their current stock.
 Accuracy: The decision to use 10,50,100,200 meters for the different scores of radial distances from stationary targets are based on the LiDar paper2 by the Journal of Engineering article on Raytheon’s patent. Raytheon used laser radar and light sensors to pick up light and infrared reflecting off of targets.  
 
@@ -77,19 +83,25 @@ From similar anti drone products in the market we saw an opening to add a drone 
 The following concept designs were developed in an attempt to choose a kill method in addition to our drone’s identification and navigation functions. As the semester progressed, we realized that we had set our sights on too broad of an objective, so the kill method was dropped. The scope of the project shifted towards sub-system development of the targeting and navigation concepts; therefore the kill method implementation was dropped after these initial concepts were developed/reviewed.
 
 \subsection{3.1. Concept 1:  Flying Bug Catcher}
-
-Figure 4.1
+\begin{figure}
+\caption{Figure 4.1}
+\label{fig:4.1}
+\end{figure}
 
 	Figure 4.1 features our first and most simple design concept. In this design, both the identification of hostile drones, and navigation to the target would be handled by an operator on the ground. After locating the target, the operator would have to manually pilot the drone to said target and attempt to tangle the enemy’s rotors in the malleable plastic net hanging underneath. This design prioritized simplicity of design.
 
 \subsection{Concept 2:  Jammer}
-
-Figure 4.2
+\begin{figure}
+\caption{Figure 4.2}
+\label{fig:4.2}
+\end{figure}
 For our second concept, we ramped up the complexity in all areas. Displayed in figure 4.2, the drone identifies the target using radio frequency detection and a microphone, navigates in the area of operation using GPS, and  utilizes a third party radio frequency jammer to jam enemy control signals from reaching their drone. This design was intended to be fully autonomous so it wouldn’t impede upon the limited manpower of a hypothetical ground squad.
 
 \subsection{Concept 3:  Semi-Auto Drone}
-
-Figure 4.3
+\begin{figure}
+\caption{Figure 4.3}
+\label{fig:4.3}
+\end{figure}
 
 	Our final design, featured in figure 4.3, combines some of the elements from the first two designs. The drone uses radar and sound targeting to assist the operator’s eyes and ears in locating the enemy drone, and after manually piloting the drone to the target, the kill is achieved with the net below. 
 
@@ -159,7 +171,11 @@ Figure 4.3
 %78
 %98
 %108
-Figure (4.4)
+\begin{figure}
+\caption{Figure (4.4)}
+\label{fig:4.4}
+\end{figure}
+
 Figure 4.4 contains the design matrix., where one metric at a time compares each of the designs to each other with the weights determined through a pairwise process.. The weight system made certain objectives more important in our decision process.  We determined that accuracy for example was the most important objective for the targeting subsystem and had a greater influence in our final design concept.  Whatever weight we determined for each objective was then multiplied by the score that we gave the objective from 0 to 4 to give the points that will be summed from each of the objectives. We realize that these decisions do not reflect the current aspect of our project
 
 \section{Ethical Considerations}
@@ -418,16 +434,30 @@ Below is the additional parts list that could not be acquired immediately within
 %
 %
 %$141
+\begin{figure}
+\caption{Budget}
+\label{fig:budget}
+\end{figure}
 
 The material costs were calculated  by adding the only two purchases that we made and adding on a generous shipping estimate to error on the side of overestimation.  The labor costs were hypothetical costs associated with all of the people working on this project.  The labor rates were estimated by looking up standard wages given the amount of education each person or group had.  Professors have a much higher labor cost because they have significantly more education than midshipmen.  The overhead costs consist of all other costs that we would encounter in a real product development scenario.  This overhead includes costs like building, property maintenance, benefits, etc.  
 
 \subsection{6.3. Mechanical Drawings}
-
-           
-Figure 3: prototyped box to hold razPi(s) Anafi drone body           Figure 4: Attaching bracket to mount to the parrot Anafi
+\begin{figure}
+\caption{Figure 3: prototyped box to hold razPi(s) Anafi drone body}
+\label{fig:3}
+\end{figure}
+\begin{figure}
+\caption{Figure 4: Attaching bracket to mount to the parrot Anafi}
+\label{fig:4}
+\end{figure}
 Above in figures 3 and 4 are prototyped, Inventor 3D models that will assist in mounting various components to the body of the drone. Figure 3 shows a compartment to house the microcontroller, and have space to thread the microphones out towards the front of the drone as well. The second figure is a mounting bracket that will be used to connect the box to the frame. Additional designs are being worked out as well to streamline the aesthetic. 
 
 \subsection{6.4. Software Structure}
+\begin{figure}
+\caption{Conversion to a binary image}
+\label{fig:3456}
+\end{figure}
+
 %
 %import cv2
 %cap = cv2.VideoCapture(0)
@@ -466,8 +496,14 @@ Software for the computer vision section follows a general while loop to display
 %stem(f_vect, magX_k);
 %xlim([0 1000]);
 %xlabel('Hz'); ylabel('signal'); title('Spectrum Plot of Iphone Recoder Hovering Anafi');
-
-
+\begin{figure}
+\caption{Drone recording}
+\label{fig:drone-recording}
+\end{figure}
+\begin{figure}
+\caption{FFT of drone recording}
+\label{fig:fft-drone-recording}
+\end{figure}
 
 The software above computes a fast fourier transform of a recorded sound signal sampled at 48kHz and then plots it. This was the basis for proof that audio capability would provide additional support to computer vision in drone detection.
 
@@ -565,6 +601,10 @@ James will also be operating the drone to get pictures for the computer vision s
 %Documentation
 %2 weeks
 %All
+\begin{figure}
+\caption{Timeline}
+\label{fig:timeline}
+\end{figure}
 
 \subsection{7.3. Risk management}
 Several of the largest risks are Raspi overload, insufficient skills, and COVID disruption.  The risk of the razpi overloading is present because the computer vision that we will be running on it will take a significant amount of processing power.  The counter-measure to this is getting a second razpi ahead of time so that if the 1st razpi is overloaded, we will have another on standby split to split the load between two.  
@@ -593,11 +633,15 @@ The last risk that we deemed most important is COVID interference.  We have alre
 %
 %
 %
+%Small reduction in technical performance (metric), or ability to meet key dates or increase in budget
+%Will fail one metric or will lose one function, will become behind schedule but will be able to meet key dates with a decrease in performance, or will need to purchase parts with more capabilities
+%Will lose key technical performance, or will need to build system or will not make key dates
 
+\begin{figure}
+\caption{Risk cube}
+\label{fig:risk}
+\end{figure}
 
-Small reduction in technical performance (metric), or ability to meet key dates or increase in budget
-Will fail one metric or will lose one function, will become behind schedule but will be able to meet key dates with a decrease in performance, or will need to purchase parts with more capabilities
-Will lose key technical performance, or will need to build system or will not make key dates
 
 \subsection{7.4. Demonstration and Testing Plan}
 OpenCV: Run through openCV PyCHarm tutorial and demonstrate the ability to interact with the program. Create a live video feed and image highlighting system that can identify, outline, display moving targets. The demonstration shows this in real time.  
@@ -610,8 +654,14 @@ At the end of this semester, we focused our efforts toward developing basic comp
 
 \subsection{Results}
 On the computer vision side of the project, we were successfully able to create and run a live video feed from the issued webcams through and mask backgrounds, highlight, and threshold a feed to pick up objects outlines. Challenges came on the front end with downloading openCV to the issued machines. Root installations and integration between the openCV library and python, a new coding language for our group, and other hiccups proved challenging. However, as seen below, the results were very promising. Having a steady source of light, the code was able to mask and highlight the moving images with ease. A comparison can be made between the original screen cap, and the thresholded one below.  This makes a good promise for the next step, which is image and color recognition. Working through the break and into next semester, we hope to get a rough draft of the image recognition software. 
-
-                                              Figure 5 detailing Computer Vision Detection                                   Figure 6 shows the original picture of the subject
+\begin{figure}
+\caption{Figure 5 detailing Computer Vision Detection}
+\label{fig:5results}
+\end{figure}
+\begin{figure}
+\caption{Figure 6 shows the original picture of the subject}
+\label{fig:6results}
+\end{figure}
 
 With regard to the audio processing, our process has been refined to completely understand the mathematical process that occurs. By demonstrating in MATLAB our ability to complete this process we needed to convert our code to python. One of the largest struggles was to get the data array of the sound file into python. Python 3.9 was unable to download external packages of .wav files and higher level communication packages are not up to date. Because of this we have implemented our risk mitigation plan by intaking data elsewhere and still demonstrating the signal processing to obtain a deliverable by 7DEC20.
 
