@@ -33,4 +33,4 @@ The rubrics and templates warp their thinking and should be eliminated. There is
   
 I understand the need to learn the thought process used by engineers to do design work, but the emphasis here is solely on PROCESS and any THOUGHT is generally accidental. 
 
-  
+
